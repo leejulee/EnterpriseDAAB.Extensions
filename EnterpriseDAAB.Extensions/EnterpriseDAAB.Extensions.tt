@@ -1,0 +1,40 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".nuspec" #>
+<# string version="";
+	using(var f = File.OpenText(Host.ResolvePath("Properties/AssemblyInfo.cs")))
+   {
+		string s;
+		var rgex=new Regex(@"\d+.+\d");
+		while ((s=f.ReadLine())!=null)
+		{
+			if(s.IndexOf("AssemblyFileVersion")!=-1)
+			{
+				if(rgex.IsMatch(s))
+				{
+					var m=rgex.Match(s);
+					version=m.ToString();
+				}
+			}
+		}
+   }#>
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>EnterpriseDAAB.Extensions</id>
+    <version><#= version #></version>
+    <title>EnterpriseDAAB.Extensions</title>
+    <authors>leoli</authors>
+    <owners>leoli</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright ©  2015</copyright>
+    <description>
+      1.EnterpriseDAAB 擴充
+    </description>
+  </metadata>
+</package>

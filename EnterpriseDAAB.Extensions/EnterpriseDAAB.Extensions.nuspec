@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>EnterpriseDAAB.Extensions</id>
+    <version>1.0.0.1</version>
+    <title>EnterpriseDAAB.Extensions</title>
+    <authors>leoli</authors>
+    <owners>leoli</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright ©  2015</copyright>
+    <description>
+      1.EnterpriseDAAB 擴充
+    </description>
+  </metadata>
+</package>

@@ -6,11 +6,14 @@ namespace EnterpriseDAAB
 {
     public interface IBaseRepository
     {
-        int Add<T>(T entity) where T : class;
+        [Obsolete("Use Add<TEntity>(TEntity entity, bool useReturnId)")]
+        int Add<TEntity>(TEntity entity) where TEntity : class;
+
+        int Add<TEntity>(TEntity entity, bool useReturnId) where TEntity : class;
 
         int Add<TEntity>(TEntity entity, bool useReturnId, Expression<Func<TEntity, object>> sqlColumns, bool useExcludeMode) where TEntity : class;
 
-        int Delete<T, TId>(TId id) where T : class;
+        int Delete<TEntity, TId>(TId id) where TEntity : class;
 
         TEntity GetData<TEntity, TId>(TId id, bool isRowMapper = false) where TEntity : class, new();
 

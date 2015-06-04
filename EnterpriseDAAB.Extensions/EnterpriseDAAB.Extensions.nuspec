@@ -2,10 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>EnterpriseDAAB.Extensions</id>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <title>EnterpriseDAAB.Extensions</title>
     <authors>leoli</authors>
     <owners>leoli</owners>
+	<projectUrl>https://github.com/leejulee/EnterpriseDAAB.Extensions</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <copyright>Copyright ©  2015</copyright>
     <description>

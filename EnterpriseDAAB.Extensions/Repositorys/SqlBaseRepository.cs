@@ -74,7 +74,7 @@ namespace EnterpriseDAAB
         /// <returns></returns>
         protected T GetSingleRow<T>(DbCommand cmd, bool useDefaultValue = false)
         {
-            return ObjectHelper.ConvertToType<T>(this.db.ExecuteScalar(cmd),useDefaultValue);
+            return ObjectHelper.ConvertToType<T>(this.db.ExecuteScalar(cmd), useDefaultValue);
         }
 
         /// <summary>
@@ -162,7 +162,21 @@ namespace EnterpriseDAAB
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>
+        [Obsolete("Use Add<TEntity>(TEntity entity, bool useReturnId)")]
         public int Add<TEntity>(TEntity entity) where TEntity : class
+        {
+            return this.Add(entity, false);
+        }
+
+        /// <summary>
+        /// Adds the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="sqlColumns">The SQL columns.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public int Add<TEntity>(TEntity entity, bool useReturnId) where TEntity : class
         {
             var typeMapInfo = new TypeMappingInfo<TEntity>(entity);
 
@@ -175,6 +189,11 @@ namespace EnterpriseDAAB
                         string.Join(",", names),
                         string.Join(",", names.Select(item => "@" + item.ToLower())));
 
+            if (useReturnId)
+            {
+                sql += ";SELECT CAST(scope_identity() AS int)";
+            }
+
             using (DbCommand cmd = this.Db.GetSqlStringCommand(sql))
             {
                 foreach (var item in propertyMapInfo)
@@ -183,7 +202,7 @@ namespace EnterpriseDAAB
                     this.db.AddInParameter(cmd, "@" + name.ToLower(), this.GetDBType(item.PropertyType), item.PropertyValue);
                 }
 
-                return this.Db.ExecuteNonQuery(cmd);
+                return useReturnId ? ObjectHelper.ConvertToType<int>(this.Db.ExecuteScalar(cmd)) : this.Db.ExecuteNonQuery(cmd);
             }
         }
 
@@ -385,7 +404,7 @@ namespace EnterpriseDAAB
             var typeMapInfo = new TypeMappingInfo<TEntity>();
 
             var propertyMapInfo = typeMapInfo.PropertyInfoList.Select(x => new PropertyMappingInfo<TEntity>(x));
-            
+
             var primaryKeyName = this.GetPrimaryKeyName(propertyMapInfo);
 
             var primaryKeyParameter = string.Format("@{0}", primaryKeyName);
@@ -716,6 +735,6 @@ namespace EnterpriseDAAB
 
             return propertyInfo.PrimaryKeyName;
         }
-        
+
     }
 }
